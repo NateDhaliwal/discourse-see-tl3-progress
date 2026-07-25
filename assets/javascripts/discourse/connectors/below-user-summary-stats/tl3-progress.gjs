@@ -7,24 +7,12 @@ import { i18n } from "discourse-i18n";
 export default class Tl3Progress extends Component {
   static shouldRender(args, helper) {
     const user = args.user;
+    // eslint-disable-next-line no-console
+    console.log(args);
+    // eslint-disable-next-line no-console
+    console.log(helper);
     if (!helper.currentUser) return false;
     return (helper.currentUser.staff || user.isCurrent) && user.trust_level < 3;
-  }
-
-  @tracked user_progress_stats;
-
-  constructor() {
-    super(...arguments);
-    getProgressStats();
-  }
-
-  async getProgressStats() {
-    try {
-      const req = await ajax(`/u/${this.args.current_user.username}/tl3-progress.json`);
-      this.user_progress_stats = req;
-    } catch (e) {
-      popupAjaxError(e);
-    }
   }
 
   <template>
