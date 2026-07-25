@@ -22,7 +22,7 @@ after_initialize do
     :user_summary,
     :stats_progress,
     include_condition: -> do
-      (scope.user == object.user || scope.staff?) && object.user.trust_level == TrustLevel[2]
+      (scope.user == object.user || scope.user.staff?) && object.user.trust_level == TrustLevel[2]
     end,
   ) { ::SeeTl3Progress::StatsProgress.new(object.user).stats }
 end
