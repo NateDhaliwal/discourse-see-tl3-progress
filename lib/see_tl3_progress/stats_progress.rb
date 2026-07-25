@@ -1,4 +1,4 @@
-module Chat
+module SeeTl3Progress
   class StatsProgress
     def initialize(user)
       @user = user
