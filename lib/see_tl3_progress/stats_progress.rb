@@ -6,7 +6,7 @@ module SeeTl3Progress
     end
 
     def stats
-      user_stats = {
+      {
         silenced: @user.silenced?,
         suspended: @user.suspended?,
         penalty_counts: @reqs.penalty_counts,
@@ -36,7 +36,6 @@ module SeeTl3Progress
         min_likes_received_users: @reqs.min_likes_received_users,
         min_likes_received_days: @reqs.min_likes_received_days
       }
-      print user_stats
     end
   end
 end
