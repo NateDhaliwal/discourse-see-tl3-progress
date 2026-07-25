@@ -21,7 +21,7 @@ after_initialize do
   add_to_serializer(:user_summary, :stats_progress, include_condition: -> {
     (scope.user == object.user || scope.is_staff?) && object.user.trust_level == TrustLevel[2]
   }) do
-    stats_progress = Chat::StatsProgress.new(object.user)
+    stats_progress = ::SeeTl3Progress::StatsProgress.new(object.user)
     {
       stats_progress: stats_progress.stats
     }
