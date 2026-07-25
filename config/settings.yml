@@ -1,4 +1,4 @@
-TODO_plugin_name:
-  plugin_name_enabled:
+see_tl3_progress:
+  see_tl3_progress_enabled:
     default: false
     client: true
