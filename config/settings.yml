@@ -2,3 +2,13 @@ see_tl3_progress:
   see_tl3_progress_enabled:
     default: false
     client: true
+  progress_bar_color:
+    default: "green"
+    type: string
+    required: true
+    client: true
+  modal_button_icon:
+    default: "circle-info"
+    type: string
+    required: true
+    client: true
