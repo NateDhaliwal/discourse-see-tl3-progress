@@ -12,7 +12,7 @@ export default class Tl3ProgressButton extends Component {
     const user = args.user;
     // eslint-disable-next-line curly
     if (!helper.currentUser) return false;
-    return (helper.currentUser.staff || user.isCurrent) && user.trust_level < 3;
+    return (helper.currentUser.staff || user.isCurrent) && user.trust_level < 3 && !user.staff;
   }
 
   @service siteSettings;
