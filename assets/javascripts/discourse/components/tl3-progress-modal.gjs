@@ -49,7 +49,8 @@ export default class Tl3ProgressModal extends Component {
 
   get doesQualify() {
     const stats = this.stats;
-    return !this.silenced_before.data &&
+    return (
+      !this.silenced_before.data &&
       !this.suspended_before.data &&
       stats.days_visited >= stats.min_days_visited &&
       stats.num_topics_replied_to >= stats.min_topics_replied_to &&
@@ -63,6 +64,11 @@ export default class Tl3ProgressModal extends Component {
       stats.num_likes_received >= stats.min_likes_received &&
       stats.min_likes_received_days >= stats.min_likes_received_days &&
       stats.min_likes_received_users >= stats.min_likes_received_users
+    );
+  }
+
+  get doesQualifyStyle() {
+    return `color: ${this.doesQualify ? "var(--success)" : "var(--danger)"};`;
   }
 
   <template>
@@ -95,11 +101,13 @@ export default class Tl3ProgressModal extends Component {
           )
         }}</p>
 
-      <ProgressBar
+      <div class="all-progress-gauges">
+        <ProgressBar
         @value={{this.stats.days_visited}}
         @total={{this.stats.min_days_visited}}
         @title="see_tl3_progress.days_visited"
         @type="min"
+        @id="days_visited"
       />
 
       <ProgressBar
@@ -107,6 +115,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_topics_replied_to}}
         @title="admin.user.tl3_requirements.topics_replied_to"
         @type="min"
+        @id="topics_replied_to"
       />
 
       <ProgressBar
@@ -114,6 +123,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_topics_viewed}}
         @title="admin.user.tl3_requirements.topics_viewed"
         @type="min"
+        @id="topics_viewed"
       />
 
       <ProgressBar
@@ -121,6 +131,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_topics_viewed_all_time}}
         @title="admin.user.tl3_requirements.topics_viewed_all_time"
         @type="min"
+        @id="topics_viewed_all_time"
       />
 
       <ProgressBar
@@ -128,6 +139,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_posts_read}}
         @title="admin.user.tl3_requirements.posts_read"
         @type="min"
+        @id="posts_read"
       />
 
       <ProgressBar
@@ -135,6 +147,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_posts_read_all_time}}
         @title="admin.user.tl3_requirements.posts_read_all_time"
         @type="min"
+        @id="posts_read_all_time"
       />
 
       <ProgressBar
@@ -142,6 +155,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.max_flagged_posts}}
         @title="admin.user.tl3_requirements.flagged_posts"
         @type="max"
+        @id="num_flagged_post"
       />
 
       <ProgressBar
@@ -149,6 +163,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.max_flagged_by_users}}
         @title="admin.user.tl3_requirements.flagged_by_users"
         @type="max"
+        @id="num_flagged_by_users"
       />
 
       <ProgressBar
@@ -156,6 +171,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_likes_given}}
         @title="admin.user.tl3_requirements.likes_given"
         @type="min"
+        @id="num_likes_gived"
       />
 
       <ProgressBar
@@ -163,6 +179,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_likes_received}}
         @title="admin.user.tl3_requirements.likes_received"
         @type="min"
+        @id="num_likes_received"
       />
 
       <ProgressBar
@@ -170,6 +187,7 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_likes_received_users}}
         @title="admin.user.tl3_requirements.likes_received_users"
         @type="min"
+        @id="num_likes_received_users"
       />
 
       <ProgressBar
@@ -177,9 +195,21 @@ export default class Tl3ProgressModal extends Component {
         @total={{this.stats.min_likes_received_days}}
         @title="admin.user.tl3_requirements.likes_received_days"
         @type="min"
+        @id="num_likes_received_days"
       />
+      </div>
 
-      <p></p>
+      <p class="inline-wrapper">
+        <div style={{trustHTML this.doesQualifyStyle}}>
+          {{icon (if this.doesQualify "check" "xmark")}}
+        </div>
+        {{#if this.doesQualify}}
+          {{i18n "admin.user.tl3_requirements.qualifies"}}
+          {{i18n "admin.user.tl3_requirements.will_be_promoted"}}
+        {{else}}
+          {{i18n "admin.user.tl3_requirements.does_not_qualify"}}
+        {{/if}}
+      </p>
     {{/if}}
   </template>
 }
