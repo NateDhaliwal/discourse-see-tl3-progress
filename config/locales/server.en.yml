@@ -1,1 +1,4 @@
 en:
+  site_settings:
+    see_tl3_progress_enabled: "Enable this plugin"
+    progress_bar_color: "Color for the progress bar. Must be a valid CSS color (RGB/HSL/hex/name)"
