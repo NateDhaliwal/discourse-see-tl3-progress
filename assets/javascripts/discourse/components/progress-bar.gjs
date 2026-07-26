@@ -9,6 +9,7 @@ import { i18n } from "discourse-i18n";
 export default class ProgressBar extends Component {
   @service siteSettings;
 
+  // Using @bernii's gauge.js module. Thanks to Claude for helping to load the script.
   setupGauge = modifier((element) => {
     loadScript("https://bernii.github.io/gauge.js/dist/gauge.min.js").then(
       () => {
