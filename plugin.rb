@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# name: see-tl3-progress
+# name: discourse-see-tl3-progress
 # about: See your own progress to TL3.
 # meta_topic_id: TODO
 # version: 0.0.1
@@ -10,19 +10,19 @@
 
 enabled_site_setting :see_tl3_progress_enabled
 
-module ::SeeTl3Progress
-  PLUGIN_NAME = "see-tl3-progress"
+module ::DiscourseSeeTl3Progress
+  PLUGIN_NAME = "discourse-see-tl3-progress"
 end
 
-require_relative "lib/see_tl3_progress/engine"
-require_relative "lib/see_tl3_progress/stats_progress"
+require_relative "lib/discourse_see_tl3_progress/engine"
+require_relative "lib/discourse_see_tl3_progress/stats_progress"
+register_asset "stylesheets/common/progress-bar.scss"
 
 after_initialize do
-  add_to_serializer(
-    :user_summary,
-    :stats_progress,
-    include_condition: -> do
-      (scope.user == object.user || scope.user.staff?) && object.user.trust_level == TrustLevel[2]
-    end,
-  ) { ::SeeTl3Progress::StatsProgress.new(object.user).stats }
+  Discourse::Application.routes.append do
+    get "/u/:username/tl3-progress.json" => "tl3_progress#show",
+        :constraints => {
+          username: RouteFormat.username,
+        }
+  end
 end
