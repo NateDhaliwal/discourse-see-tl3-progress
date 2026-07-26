@@ -3,7 +3,14 @@ en:
     admin:
       site_settings:
         categories:
-          TODO_plugin_name: "Plugin Name"
+          see_tl3_progress: "See TL3 Progress"
   js:
-    discourse_plugin_name:
-      placeholder: placeholder
+    see_tl3_progress:
+      title: "See TL3 Progress"
+      modal_button_text: "Show TL3 progress"
+      modal_title: "TL3 Progress"
+      suspended: "Suspended in the last 6 months"
+      not_suspended: "Not suspended in the last 6 months"
+      silenced: "Silenced in the last 6 months"
+      not_silenced: "Not silenced in the last 6 monthis"
+      days_visited: "Days visited"
