@@ -4,3 +4,4 @@ en:
     progress_bar_color: "Color for the progress bar. Must be a valid CSS color (RGB/HSL/hex/name)"
     progress_bar_background_color: "Background color for the progress bar. Must be a valid CSS color (RGB/HSL/hex/name)"
     modal_button_icon: "Icon for the button to show the progress"
+    show_verbose_tl3_progress: "Show users the detailed breakdown into which requirements they have not hit, and its corresponding values"
