@@ -1,24 +1,19 @@
 .inline-wrapper {
   display: flex;
-  gap: 0.5em;
+  gap: 0.7em;
   align-items: center;
 }
 
 .tl3-progress-bar {
   position: relative;
-  height: stretch;
-  border: 2px solid var(--primary);
-  width: 10em;
+  height: 1em;
+  width: 20em;
+  border-radius: 1em;
 }
 
 .tl3-progress-bar-meter {
-  height: 100%;
-}
-
-.tl3-progress-text {
-  position: absolute;
-  top: 0;
-  right: 0;
+  height: 1em;
+  border-radius: 1em;
 }
 
 .tl3-progress-gauge-wrapper {
@@ -36,7 +31,19 @@
   text-align: center;
 }
 
-.all-progress-gauges {
-  display: grid;
-  grid-template-columns: auto auto;
+.segmented-bars {
+  display: flex;
+  gap: 0.2em;
+  height: 1em;
+}
+
+.segmented-bar {
+  width: 5em;
+  height: 0.5em;
+  border-radius: 1em;
+}
+
+.segmented-bar-fill {
+  height: 0.5em;
+  border-radius: 1em;
 }
