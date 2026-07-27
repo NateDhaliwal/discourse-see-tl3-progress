@@ -8,12 +8,17 @@ see_tl3_progress:
     required: true
     client: true
   progress_bar_background_color:
-    default: "#EEEEEE"
+    default: "lightgray"
     type: string
     required: true
     client: true
   modal_button_icon:
     default: "circle-info"
     type: string
+    required: true
+    client: true
+  show_verbose_tl3_progress:
+    default: false
+    type: bool
     required: true
     client: true
