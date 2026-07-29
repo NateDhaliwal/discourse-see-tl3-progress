@@ -1,5 +1,6 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
+import { service } from "@ember/service";
 import { trustHTML } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
@@ -10,6 +11,8 @@ import { doesQualify } from "../lib/calculate-stats";
 import ProgressBar from "./progress-bar";
 
 export default class Tl3ProgressModal extends Component {
+  @service siteSettings;
+
   @tracked stats;
   @tracked loading = true;
 
@@ -54,6 +57,12 @@ export default class Tl3ProgressModal extends Component {
 
   get doesQualifyStyle() {
     return `color: ${this.doesQualify ? "var(--success)" : "var(--danger)"};`;
+  }
+
+  get timePeriodText() {
+    return i18n("see_tl3_progress.time_period", {
+      num_days: this.stats.time_period
+    });
   }
 
   <template>
@@ -184,6 +193,8 @@ export default class Tl3ProgressModal extends Component {
         />
       </div>
 
+      <hr />
+
       <p class="inline-wrapper">
         <div style={{trustHTML this.doesQualifyStyle}}>
           {{icon (if this.doesQualify "check" "xmark")}}
@@ -195,6 +206,11 @@ export default class Tl3ProgressModal extends Component {
           {{i18n "admin.user.tl3_requirements.does_not_qualify"}}
         {{/if}}
       </p>
+    {{/if}}
+
+    {{#if this.siteSettings.modal_bottom_text}}
+      <hr />
+      <p>{{trustHTML this.siteSettings.modal_bottom_text}}</p>
     {{/if}}
   </template>
 }
