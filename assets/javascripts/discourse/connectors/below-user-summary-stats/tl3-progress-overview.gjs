@@ -8,9 +8,11 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import DButton from "discourse/ui-kit/d-button";
 import DConditionalLoadingSpinner from "discourse/ui-kit/d-conditional-loading-spinner";
 import DModal from "discourse/ui-kit/d-modal";
+import icon from "discourse/ui-kit/helpers/d-icon";
 import { i18n } from "discourse-i18n";
 import Tl3ProgressModal from "../../components/tl3-progress-modal";
 import {
+  closestStat,
   doesQualify,
   percentageDone,
   stepsDone,
@@ -63,15 +65,28 @@ export default class Tl3ProgressButton extends Component {
     return stepsDone(this.stats);
   }
 
-  get stepsDoneText() {
-    return i18n("see_tl3_progress.steps_done", {
+  get progressDoneText() {
+    return i18n("see_tl3_progress.progress_done", {
       steps_completed: this.stepsDone,
+      percentage_done: this.percentageDone,
     });
   }
 
-  get percentageDoneText() {
-    return i18n("see_tl3_progress.percentage_done", {
-      percentage_done: this.percentageDone,
+  get timePeriodText() {
+    return i18n("see_tl3_progress.time_period", {
+      num_days: this.stats.time_period,
+    });
+  }
+
+  get closestStatText() {
+    const closestStatObj = closestStat(this.stats);
+    return i18n("see_tl3_progress.closest_stat", {
+      stat_name: i18n(
+        closestStatObj.key === "days_visited" // days_visited uses its own plugin-defined locale
+          ? "see_tl3_progress.days_visited"
+          : `admin.user.tl3_requirements.${closestStatObj.key}`
+      ),
+      stat_left_to_next: closestStatObj.left,
     });
   }
 
@@ -115,7 +130,13 @@ export default class Tl3ProgressButton extends Component {
           </div>
         {{/each}}
       </div>
-      <p>{{this.stepsDoneText}} | {{this.percentageDoneText}}</p>
+      <p>
+        {{this.progressDoneText}}
+        {{this.timePeriodText}}
+        {{#if this.siteSettings.show_next_closest_stat}}
+          <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}} {{this.closestStatText}}</div>
+        {{/if}}
+      </p>
 
       {{#if this.siteSettings.show_verbose_tl3_progress}}
         <DButton
@@ -127,7 +148,10 @@ export default class Tl3ProgressButton extends Component {
         />
         {{#if this.modalShowing}}
           <DModal
-            @title={{i18n "see_tl3_progress.modal_title"}}
+            @title={{i18n
+              "see_tl3_progress.modal_title"
+              num_days=this.stats.time_period
+            }}
             @closeModal={{this.toggleModalState}}
           >
             <Tl3ProgressModal @user={{@user}} />
