@@ -22,3 +22,14 @@ see_tl3_progress:
     type: bool
     required: true
     client: true
+  modal_bottom_text:
+    default: ""
+    type: string
+    textarea: true
+    required: false
+    client: true
+  show_next_closest_stat:
+    default: false
+    type: bool
+    required: true
+    client: true
