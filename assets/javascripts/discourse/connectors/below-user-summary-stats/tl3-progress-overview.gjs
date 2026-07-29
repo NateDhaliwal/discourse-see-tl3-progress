@@ -25,7 +25,9 @@ export default class Tl3ProgressButton extends Component {
     if (!helper.currentUser) return false;
     return (
       (helper.currentUser.staff || user.isCurrent) &&
-      user.trust_level < 3 &&
+      (helper.siteSettings.show_warning_when_tl3_requirements_low
+        ? user.trust_level === 3
+        : user.trust_level === 2) &&
       !user.staff
     );
   }
@@ -114,6 +116,14 @@ export default class Tl3ProgressButton extends Component {
     return `background-color: ${this.siteSettings.progress_bar_background_color}`;
   }
 
+  get showAboutToLoseTl3() {
+    return (
+      !this.stats.on_grace_period &&
+      this.siteSettings.show_warning_when_tl3_requirements_low &&
+      this.args.user.trust_level === 3
+    );
+  }
+
   <template>
     {{#if this.loading}}
       <DConditionalLoadingSpinner @condition={{this.loading}} />
@@ -134,7 +144,8 @@ export default class Tl3ProgressButton extends Component {
         {{this.progressDoneText}}
         {{this.timePeriodText}}
         {{#if this.siteSettings.show_next_closest_stat}}
-          <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}} {{this.closestStatText}}</div>
+          <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}}
+            {{this.closestStatText}}</div>
         {{/if}}
       </p>
 
@@ -154,7 +165,7 @@ export default class Tl3ProgressButton extends Component {
             }}
             @closeModal={{this.toggleModalState}}
           >
-            <Tl3ProgressModal @user={{@user}} />
+            <Tl3ProgressModal @user={{@user}} @stats={{this.stats}} />
           </DModal>
         {{/if}}
       {{/if}}

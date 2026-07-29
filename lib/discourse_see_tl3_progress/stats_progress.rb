@@ -10,6 +10,7 @@ module DiscourseSeeTl3Progress
     def stats
       {
         time_period: SiteSetting.tl3_time_period,
+        on_grace_period: @reqs.on_grace_period,
         silenced: @user.silenced?,
         suspended: @user.suspended?,
         penalty_counts: @reqs.penalty_counts,

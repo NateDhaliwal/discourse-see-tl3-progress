@@ -7,3 +7,4 @@ en:
     show_verbose_tl3_progress: "Show users the detailed breakdown into which requirements they have not hit, and its corresponding values"
     modal_bottom_text: "Additional, optional text at the bottom of the modal"
     show_next_closest_stat: "Show the next closest requirement that can be met for users"
+    show_warning_when_tl3_requirements_low: "Show a warning on the user summary page if they are close to losing TL3"

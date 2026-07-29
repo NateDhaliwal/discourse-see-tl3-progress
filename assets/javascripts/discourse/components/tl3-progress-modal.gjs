@@ -2,8 +2,6 @@ import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import { trustHTML } from "@ember/template";
-import { ajax } from "discourse/lib/ajax";
-import { popupAjaxError } from "discourse/lib/ajax-error";
 import DConditionalLoadingSpinner from "discourse/ui-kit/d-conditional-loading-spinner";
 import icon from "discourse/ui-kit/helpers/d-icon";
 import { i18n } from "discourse-i18n";
@@ -13,24 +11,10 @@ import ProgressBar from "./progress-bar";
 export default class Tl3ProgressModal extends Component {
   @service siteSettings;
 
-  @tracked stats;
   @tracked loading = true;
 
-  constructor() {
-    super(...arguments);
-    this.getUserStats();
-  }
-
-  async getUserStats() {
-    try {
-      const data = await ajax(
-        `/u/${this.args.user.username}/tl3-progress.json`
-      );
-      this.stats = data.stats_progress;
-      this.loading = false;
-    } catch (e) {
-      popupAjaxError(e);
-    }
+  get stats() {
+    return this.args.stats;
   }
 
   get suspended_before() {
@@ -61,7 +45,7 @@ export default class Tl3ProgressModal extends Component {
 
   get timePeriodText() {
     return i18n("see_tl3_progress.time_period", {
-      num_days: this.stats.time_period
+      num_days: this.stats.time_period,
     });
   }
 

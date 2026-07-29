@@ -20,7 +20,6 @@ see_tl3_progress:
   show_verbose_tl3_progress:
     default: false
     type: bool
-    required: true
     client: true
   modal_bottom_text:
     default: ""
@@ -31,5 +30,8 @@ see_tl3_progress:
   show_next_closest_stat:
     default: false
     type: bool
-    required: true
+    client: true
+  show_warning_when_tl3_requirements_low:
+    default: false
+    type: bool
     client: true
