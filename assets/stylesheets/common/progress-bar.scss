@@ -4,6 +4,15 @@
   align-items: center;
 }
 
+.inline-bar-wrapper {
+  display: grid;
+  grid-template-columns: 1.4em minmax(7em, 12em) 1fr 3.5em;
+  align-items: center;
+  gap: 0.7em;
+  width: 100%;
+  min-width: 0; // critical: lets grid children shrink below their content size
+}
+
 .tl3-progress-bar {
   position: relative;
   height: 1em;
@@ -46,4 +55,15 @@
 .segmented-bar-fill {
   height: 0.5em;
   border-radius: 1em;
+}
+
+#closest-stat-text {
+  margin-top: 0.1em;
+  border: 1px solid var(--tertiary);
+  color: var(--tertiary);
+  padding: 0.5em;
+  border-radius: var(--d-border-radius);
+  gap: 0.2em;
+  width: fit-content;
+  background-color: var(--tertiary-low);
 }
