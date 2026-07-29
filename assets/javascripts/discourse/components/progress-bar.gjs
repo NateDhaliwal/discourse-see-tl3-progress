@@ -74,7 +74,7 @@ export default class ProgressBar extends Component {
   }
 
   <template>
-    <p class="inline-wrapper">
+    <p class="inline-bar-wrapper">
       <div style={{trustHTML this.iconColor}}>{{icon this.iconType}}</div>
       {{i18n @title}}
       <div class="tl3-progress-bar" style={{trustHTML this.meterBgStyle}}>
