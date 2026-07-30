@@ -12,7 +12,7 @@ import icon from "discourse/ui-kit/helpers/d-icon";
 import { i18n } from "discourse-i18n";
 import Tl3ProgressModal from "../../components/tl3-progress-modal";
 import {
-  closestStat,
+  diffLess,
   doesQualify,
   percentageDone,
   stepsDone,
@@ -81,7 +81,7 @@ export default class Tl3ProgressButton extends Component {
   }
 
   get closestStatText() {
-    const closestStatObj = closestStat(this.stats);
+    const closestStatObj = diffLess(this.stats);
     return i18n("see_tl3_progress.closest_stat", {
       stat_name: i18n(
         closestStatObj.key === "days_visited" // days_visited uses its own plugin-defined locale
