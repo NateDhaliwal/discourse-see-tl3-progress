@@ -1,8 +1,10 @@
 en:
   site_settings:
     see_tl3_progress_enabled: "Enable this plugin"
-    progress_bar_color: "Color for the progress bar. Must be a valid CSS color (RGB/HSL/hex/name)"
-    progress_bar_background_color: "Background color for the progress bar. Must be a valid CSS color (RGB/HSL/hex/name)"
+    progress_bar_color_light: "Color for the progress bar for light color palettes. Must be a valid CSS color (RGB/HSL/hex/name)"
+    progress_bar_background_color_light: "Background color for the progress bar for light color palettes. Must be a valid CSS color (RGB/HSL/hex/name)"
+    progress_bar_color_dark: "Color for the progress bar for dark color palettes. Must be a valid CSS color (RGB/HSL/hex/name)"
+    progress_bar_background_color_dark: "Background color for the progress bar for dark color palettes. Must be a valid CSS color (RGB/HSL/hex/name)"
     modal_button_icon: "Icon for the button to show the progress"
     show_verbose_tl3_progress: "Show users the detailed breakdown into which requirements they have not hit, and its corresponding values"
     modal_bottom_text: "Additional, optional text at the bottom of the modal"

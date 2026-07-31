@@ -7,35 +7,8 @@ import icon from "discourse/ui-kit/helpers/d-icon";
 import { i18n } from "discourse-i18n";
 
 export default class ProgressBar extends Component {
+  @service session;
   @service siteSettings;
-
-  // Using @bernii's gauge.js module. Thanks to Claude for helping to load the script.
-  // setupGauge = modifier((element) => {
-  //   loadScript("https://bernii.github.io/gauge.js/dist/gauge.min.js").then(
-  //     () => {
-  //       // eslint-disable-next-line no-undef
-  //       const gauge = new Donut(element).setOptions({
-  //         angle: 0.3,
-  //         lineWidth: 0.05,
-  //         pointer: {
-  //           length: 0.6,
-  //           strokeWidth: 0.035,
-  //           color: this.siteSettings.progress_bar_color,
-  //         },
-  //         colorStart: this.siteSettings.progress_bar_color,
-  //         colorStop: this.siteSettings.progress_bar_color,
-  //         strokeColor: this.siteSettings.progress_bar_background_color,
-  //         generateGradient: true,
-  //         highDpiSupport: true,
-  //       });
-
-  //       gauge.maxValue = this.args.total;
-  //       gauge.setMinValue(0);
-  //       gauge.animationSpeed = 100;
-  //       gauge.set(this.args.total === 0 ? 1 : this.args.value); // If the max is 0, we set the value to 1 (effectively 1/0)
-  //     }
-  //   );
-  // });
 
   get iconType() {
     // eslint-disable-next-line curly
@@ -66,11 +39,11 @@ export default class ProgressBar extends Component {
   get meterStyle() {
     const percent = (this.args.value / this.args.total) * 100;
     // We set it to 5% for aesthetics, if not it becomes too squashed
-    return `width: ${percent <= 5 ? 5 : percent}%; background-color: ${this.siteSettings.progress_bar_color};`;
+    return `width: ${percent <= 5 ? 5 : percent}%; background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_color_dark : this.siteSettings.progress_bar_color_light};`;
   }
 
   get meterBgStyle() {
-    return `background-color: ${this.siteSettings.progress_bar_background_color};`;
+    return `background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_background_color_dark : this.siteSettings.progress_bar_background_color_light};`;
   }
 
   <template>

@@ -2,12 +2,22 @@ see_tl3_progress:
   see_tl3_progress_enabled:
     default: false
     client: true
-  progress_bar_color:
+  progress_bar_color_light:
     default: "green"
     type: string
     required: true
     client: true
-  progress_bar_background_color:
+  progress_bar_color_dark:
+    default: "green"
+    type: string
+    required: true
+    client: true
+  progress_bar_background_color_light:
+    default: "darkgray"
+    type: string
+    required: true
+    client: true
+  progress_bar_background_color_dark:
     default: "lightgray"
     type: string
     required: true

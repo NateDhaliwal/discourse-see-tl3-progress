@@ -5,6 +5,7 @@ import { service } from "@ember/service";
 import { trustHTML } from "@ember/template";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import { eq } from "discourse/truth-helpers";
 import DButton from "discourse/ui-kit/d-button";
 import DConditionalLoadingSpinner from "discourse/ui-kit/d-conditional-loading-spinner";
 import DModal from "discourse/ui-kit/d-modal";
@@ -32,7 +33,9 @@ export default class Tl3ProgressButton extends Component {
     );
   }
 
+  @service interfaceColor;
   @service siteSettings;
+  @service session;
 
   @tracked modalShowing = false;
   @tracked stats;
@@ -41,6 +44,8 @@ export default class Tl3ProgressButton extends Component {
   constructor() {
     super(...arguments);
     this.getUserStats();
+    console.log(this.session);
+    console.log(this.interfaceColor);
   }
 
   async getUserStats() {
@@ -74,12 +79,6 @@ export default class Tl3ProgressButton extends Component {
     });
   }
 
-  get timePeriodText() {
-    return i18n("see_tl3_progress.time_period", {
-      num_days: this.stats.time_period,
-    });
-  }
-
   get closestStatText() {
     const closestStatObj = diffLess(this.stats);
     return i18n("see_tl3_progress.closest_stat", {
@@ -102,7 +101,7 @@ export default class Tl3ProgressButton extends Component {
     for (let i = 0; i < 14; i++) {
       if (i < this.stepsDone) {
         state.push(
-          `background-color: ${this.siteSettings.progress_bar_color}; width: 100%;`
+          `background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_color_dark : this.siteSettings.progress_bar_color_light}; width: 100%;`
         );
       } else {
         state.push(false);
@@ -113,7 +112,7 @@ export default class Tl3ProgressButton extends Component {
   }
 
   get barBg() {
-    return `background-color: ${this.siteSettings.progress_bar_background_color}`;
+    return `background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_background_color_dark : this.siteSettings.progress_bar_background_color_light}`;
   }
 
   get showAboutToLoseTl3() {
@@ -142,7 +141,14 @@ export default class Tl3ProgressButton extends Component {
       </div>
       <p>
         {{this.progressDoneText}}
-        {{this.timePeriodText}}
+        {{i18n
+          (if
+            (eq this.stats.time_period 1)
+            "see_tl3_progress.modal_title.one"
+            "see_tl3_progress.modal_title.other"
+          )
+          num_days=this.stats.time_period
+        }}
         {{#if this.siteSettings.show_next_closest_stat}}
           <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}}
             {{this.closestStatText}}</div>
@@ -160,7 +166,11 @@ export default class Tl3ProgressButton extends Component {
         {{#if this.modalShowing}}
           <DModal
             @title={{i18n
-              "see_tl3_progress.modal_title"
+              (if
+                (eq this.stats.time_period 1)
+                "see_tl3_progress.modal_title.one"
+                "see_tl3_progress.modal_title.other"
+              )
               num_days=this.stats.time_period
             }}
             @closeModal={{this.toggleModalState}}
