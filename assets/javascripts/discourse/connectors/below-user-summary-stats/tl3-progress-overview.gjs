@@ -14,6 +14,7 @@ import { i18n } from "discourse-i18n";
 import Tl3ProgressModal from "../../components/tl3-progress-modal";
 import {
   diffLess,
+  diffMore,
   doesQualify,
   percentageDone,
   stepsDone,
@@ -33,7 +34,6 @@ export default class Tl3ProgressButton extends Component {
     );
   }
 
-  @service interfaceColor;
   @service siteSettings;
   @service session;
 
@@ -44,8 +44,6 @@ export default class Tl3ProgressButton extends Component {
   constructor() {
     super(...arguments);
     this.getUserStats();
-    console.log(this.session);
-    console.log(this.interfaceColor);
   }
 
   async getUserStats() {
@@ -121,6 +119,18 @@ export default class Tl3ProgressButton extends Component {
       this.siteSettings.show_warning_when_tl3_requirements_low &&
       this.args.user.trust_level === 3
     );
+  }
+
+  get closestStatToLoseText() {
+    const closestStatObj = diffMore(this.stats);
+    return i18n("see_tl3_progress.closest_stat_to_lose", {
+      stat_name: i18n(
+        closestStatObj.key === "days_visited" // days_visited uses its own plugin-defined locale
+          ? "see_tl3_progress.days_visited"
+          : `admin.user.tl3_requirements.${closestStatObj.key}`
+      ),
+      stat_left_to_next: closestStatObj.left,
+    });
   }
 
   <template>

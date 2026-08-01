@@ -22,3 +22,4 @@ en:
         one: "Based on last %{num_days} days."
         other: "Based on last %{num_days} days."
       closest_stat: "Closest: %{stat_name}, %{stat_left_to_next} to go."
+      closest_stat_to_lose: "You are close to losing TL3! In danger: %{stat_name}, %{stat_left}"

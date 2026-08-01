@@ -136,29 +136,38 @@ export function diffLess(stats) {
   };
 }
 
-function diffMore(key, value, stats) {
+export function diffMore(stats, site_settings) {
   const diffs = {
-    silenced: 1,
-    suspended: 1,
-    days_visited: value * stats.min_days_visited - stats.min_days_visited,
+    days_visited: stats.min_days_visited - stats.days_visited,
     topics_replied_to:
-      value * stats.min_topics_replied_to - stats.min_topics_replied_to,
-    topics_viewed: value * stats.min_topics_viewed - stats.min_topics_viewed,
-    posts_read: value * stats.min_posts_read - stats.min_posts_read,
-    flagged_posts: stats.max_flagged_posts,
-    flagged_by_users: stats.max_flagged_posts_by_users,
+      stats.min_topics_replied_to - stats.num_topics_replied_to,
+    topics_viewed: stats.min_topics_viewed - stats.topics_viewed,
+    posts_read: stats.min_posts_read - stats.posts_read,
+    flagged_posts: stats.num_flagged_posts,
+    flagged_by_users: stats.num_flagged_by_users,
     topics_viewed_all_time:
-      value * stats.min_topics_viewed_all_time -
-      stats.min_topics_viewed_all_time,
+      stats.min_topics_viewed_all_time - stats.topics_viewed_all_time,
     posts_read_all_time:
-      value * stats.min_posts_read_all_time - stats.min_posts_read_all_time,
-    likes_given: value * stats.min_likes_given - stats.min_likes_given,
-    likes_received: value * stats.min_likes_received - stats.min_likes_received,
+      stats.min_posts_read_all_time - stats.posts_read_all_time,
+    likes_given: stats.min_likes_given - stats.num_likes_given,
+    likes_received: stats.min_likes_received - stats.num_likes_received,
     likes_received_days:
-      value * stats.min_likes_received_days - stats.min_likes_received_days,
+      stats.min_likes_received_days - stats.num_likes_received_days,
     likes_received_users:
-      value * stats.min_likes_received_users - stats.min_likes_received_users,
+      stats.min_likes_received_users - stats.num_likes_received_users,
   };
 
-  return diffs[key];
+  for (const [key, value] of Object.entries(diffs)) {
+    if (value >= site_settings.low_tl3_stats_minimum) {
+      delete diffs[key];
+    }
+  }
+
+  const min_val = Math.min(...Object.values(diffs));
+  const stat_name = Object.keys(diffs).find((key) => diffs[key] === min_val);
+
+  return {
+    key: stat_name,
+    left: diffs[stat_name],
+  };
 }

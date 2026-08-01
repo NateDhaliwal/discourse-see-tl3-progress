@@ -8,7 +8,7 @@ see_tl3_progress:
     required: true
     client: true
   progress_bar_color_dark:
-    default: "green"
+    default: "lightgreen"
     type: string
     required: true
     client: true
@@ -44,4 +44,8 @@ see_tl3_progress:
   show_warning_when_tl3_requirements_low:
     default: false
     type: bool
+    client: true
+  low_tl3_stats_minimum:
+    default: 5
+    type: integer
     client: true
