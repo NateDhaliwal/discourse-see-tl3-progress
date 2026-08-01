@@ -8,7 +8,7 @@ see_tl3_progress:
     required: true
     client: true
   progress_bar_color_dark:
-    default: "lightgreen"
+    default: "green"
     type: string
     required: true
     client: true

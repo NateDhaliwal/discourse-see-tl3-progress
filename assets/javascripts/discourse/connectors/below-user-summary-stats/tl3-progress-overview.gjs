@@ -26,11 +26,12 @@ export default class Tl3ProgressButton extends Component {
     // eslint-disable-next-line curly
     if (!helper.currentUser) return false;
     return (
-      (helper.currentUser.staff || user.isCurrent) &&
-      (helper.siteSettings.show_warning_when_tl3_requirements_low
+      helper.currentUser.staff ||
+      user.isCurrent ||
+      ((helper.siteSettings.show_warning_when_tl3_requirements_low
         ? user.trust_level === 3
         : user.trust_level === 2) &&
-      !user.staff
+        !user.staff)
     );
   }
 
@@ -75,6 +76,13 @@ export default class Tl3ProgressButton extends Component {
       steps_completed: this.stepsDone,
       percentage_done: this.percentageDone,
     });
+  }
+
+  get showClosestStat() {
+    return (
+      this.siteSettings.show_verbose_tl3_progress &&
+      this.args.user.trust_level === 2
+    );
   }
 
   get closestStatText() {
@@ -122,14 +130,14 @@ export default class Tl3ProgressButton extends Component {
   }
 
   get closestStatToLoseText() {
-    const closestStatObj = diffMore(this.stats);
+    const closestStatObj = diffMore(this.stats, this.siteSettings);
     return i18n("see_tl3_progress.closest_stat_to_lose", {
       stat_name: i18n(
         closestStatObj.key === "days_visited" // days_visited uses its own plugin-defined locale
           ? "see_tl3_progress.days_visited"
-          : `admin.user.tl3_requirements.${closestStatObj.key}`
+          : `see_tl3_progress.${closestStatObj.key}`
       ),
-      stat_left_to_next: closestStatObj.left,
+      stat_left: closestStatObj.left,
     });
   }
 
@@ -159,9 +167,17 @@ export default class Tl3ProgressButton extends Component {
           )
           num_days=this.stats.time_period
         }}
-        {{#if this.siteSettings.show_next_closest_stat}}
+        {{#if this.showClosestStat}}
           <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}}
-            {{this.closestStatText}}</div>
+            {{this.closestStatText}}
+          </div>
+        {{/if}}
+        {{#if this.showAboutToLoseTl3}}
+          <div id="closest-stat-to-lose-text" class="inline-wrapper">{{icon
+              "triangle-exclamation"
+            }}
+            {{this.closestStatToLoseText}}
+          </div>
         {{/if}}
       </p>
 

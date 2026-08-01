@@ -67,3 +67,14 @@
   width: fit-content;
   background-color: var(--tertiary-low);
 }
+
+#closest-stat-to-lose-text {
+  margin-top: 0.1em;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5em;
+  border-radius: var(--d-border-radius);
+  gap: 0.2em;
+  width: fit-content;
+  background-color: var(--danger-low);
+}

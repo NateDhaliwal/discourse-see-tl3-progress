@@ -1,8 +1,7 @@
 import Component from "@glimmer/component";
-import { tracked } from "@glimmer/tracking";
 import { service } from "@ember/service";
 import { trustHTML } from "@ember/template";
-import DConditionalLoadingSpinner from "discourse/ui-kit/d-conditional-loading-spinner";
+import { eq } from "discourse/truth-helpers";
 import icon from "discourse/ui-kit/helpers/d-icon";
 import { i18n } from "discourse-i18n";
 import { doesQualify } from "../lib/calculate-stats";
@@ -10,8 +9,6 @@ import ProgressBar from "./progress-bar";
 
 export default class Tl3ProgressModal extends Component {
   @service siteSettings;
-
-  @tracked loading = true;
 
   get stats() {
     return this.args.stats;
@@ -36,7 +33,7 @@ export default class Tl3ProgressModal extends Component {
   }
 
   get doesQualify() {
-    return doesQualify(this.stats);
+    return doesQualify(this.stats) && this.args.user.trust_level === 2;
   }
 
   get doesQualifyStyle() {
@@ -50,9 +47,7 @@ export default class Tl3ProgressModal extends Component {
   }
 
   <template>
-    {{#if this.loading}}
-      <DConditionalLoadingSpinner @condition={{this.loading}} />
-    {{else}}
+    {{#if @stats}}
       <p class="inline-wrapper">
         <div style={{trustHTML this.suspended_before.style}}>
           {{icon (if this.suspended_before.data "xmark" "check")}}
@@ -91,7 +86,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.num_topics_replied_to}}
           @total={{this.stats.min_topics_replied_to}}
-          @title="admin.user.tl3_requirements.topics_replied_to"
+          @title="see_tl3_progress.topics_replied_to"
           @type="min"
           @id="topics_replied_to"
         />
@@ -99,7 +94,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.topics_viewed}}
           @total={{this.stats.min_topics_viewed}}
-          @title="admin.user.tl3_requirements.topics_viewed"
+          @title="see_tl3_progress.topics_viewed"
           @type="min"
           @id="topics_viewed"
         />
@@ -107,7 +102,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.topics_viewed_all_time}}
           @total={{this.stats.min_topics_viewed_all_time}}
-          @title="admin.user.tl3_requirements.topics_viewed_all_time"
+          @title="see_tl3_progress.topics_viewed_all_time"
           @type="min"
           @id="topics_viewed_all_time"
         />
@@ -115,7 +110,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.posts_read}}
           @total={{this.stats.min_posts_read}}
-          @title="admin.user.tl3_requirements.posts_read"
+          @title="see_tl3_progress.posts_read"
           @type="min"
           @id="posts_read"
         />
@@ -123,7 +118,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.posts_read_all_time}}
           @total={{this.stats.min_posts_read_all_time}}
-          @title="admin.user.tl3_requirements.posts_read_all_time"
+          @title="see_tl3_progress.posts_read_all_time"
           @type="min"
           @id="posts_read_all_time"
         />
@@ -131,15 +126,15 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.num_flagged_posts}}
           @total={{this.stats.max_flagged_posts}}
-          @title="admin.user.tl3_requirements.flagged_posts"
+          @title="see_tl3_progress.flagged_posts"
           @type="max"
-          @id="num_flagged_post"
+          @id="num_flagged_posts"
         />
 
         <ProgressBar
           @value={{this.stats.num_flagged_by_users}}
           @total={{this.stats.max_flagged_by_users}}
-          @title="admin.user.tl3_requirements.flagged_by_users"
+          @title="see_tl3_progress.flagged_by_users"
           @type="max"
           @id="num_flagged_by_users"
         />
@@ -147,15 +142,15 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.num_likes_given}}
           @total={{this.stats.min_likes_given}}
-          @title="admin.user.tl3_requirements.likes_given"
+          @title="see_tl3_progress.likes_given"
           @type="min"
-          @id="num_likes_gived"
+          @id="num_likes_given"
         />
 
         <ProgressBar
           @value={{this.stats.num_likes_received}}
           @total={{this.stats.min_likes_received}}
-          @title="admin.user.tl3_requirements.likes_received"
+          @title="see_tl3_progress.likes_received"
           @type="min"
           @id="num_likes_received"
         />
@@ -163,7 +158,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.num_likes_received_users}}
           @total={{this.stats.min_likes_received_users}}
-          @title="admin.user.tl3_requirements.likes_received_users"
+          @title="see_tl3_progress.likes_received_users"
           @type="min"
           @id="num_likes_received_users"
         />
@@ -171,7 +166,7 @@ export default class Tl3ProgressModal extends Component {
         <ProgressBar
           @value={{this.stats.num_likes_received_days}}
           @total={{this.stats.min_likes_received_days}}
-          @title="admin.user.tl3_requirements.likes_received_days"
+          @title="see_tl3_progress.likes_received_days"
           @type="min"
           @id="num_likes_received_days"
         />
@@ -179,17 +174,19 @@ export default class Tl3ProgressModal extends Component {
 
       <hr />
 
-      <p class="inline-wrapper">
-        <div style={{trustHTML this.doesQualifyStyle}}>
-          {{icon (if this.doesQualify "check" "xmark")}}
-        </div>
-        {{#if this.doesQualify}}
-          {{i18n "admin.user.tl3_requirements.qualifies"}}
-          {{i18n "admin.user.tl3_requirements.will_be_promoted"}}
-        {{else}}
-          {{i18n "admin.user.tl3_requirements.does_not_qualify"}}
-        {{/if}}
-      </p>
+      {{#if (eq @user.trust_level 2)}}
+        <p class="inline-wrapper">
+          <div style={{trustHTML this.doesQualifyStyle}}>
+            {{icon (if this.doesQualify "check" "xmark")}}
+          </div>
+          {{#if this.doesQualify}}
+            {{i18n "see_tl3_progress.qualifies"}}
+            {{i18n "see_tl3_progress.will_be_promoted"}}
+          {{else}}
+            {{i18n "see_tl3_progress.does_not_qualify"}}
+          {{/if}}
+        </p>
+      {{/if}}
     {{/if}}
 
     {{#if this.siteSettings.modal_bottom_text}}

@@ -14,16 +14,17 @@ export default class ProgressBar extends Component {
     // eslint-disable-next-line curly
     if (this.args.value === 0 && this.args.total === 0) return "check";
     if (this.args.type === "min") {
-      if (this.args.value <= this.args.total) {
-        return "xmark";
-      } else {
+      if (this.args.value >= this.args.total) {
         return "check";
+      } else {
+        return "xmark";
       }
     } else {
-      if (this.args.value >= this.args.total) {
-        return "xmark";
-      } else {
+      // Handle max, for flags
+      if (this.args.value <= this.args.total) {
         return "check";
+      } else {
+        return "xmark";
       }
     }
   }
@@ -39,7 +40,7 @@ export default class ProgressBar extends Component {
   get meterStyle() {
     const percent = (this.args.value / this.args.total) * 100;
     // We set it to 5% for aesthetics, if not it becomes too squashed
-    return `width: ${percent <= 5 ? 5 : percent}%; background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_color_dark : this.siteSettings.progress_bar_color_light};`;
+    return `width: ${percent <= 5 && percent > 0 ? 5 : percent}%; background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_color_dark : this.siteSettings.progress_bar_color_light};`;
   }
 
   get meterBgStyle() {
@@ -60,24 +61,5 @@ export default class ProgressBar extends Component {
         {{@value}}/{{@total}}
       </div>
     </p>
-    {{!-- <div>
-      <div class="inline-wrapper">
-        <div style={{trustHTML this.iconColor}}>{{icon this.iconType}}</div>
-        {{i18n @title}}
-      </div>
-
-      <div class="tl3-progress-gauge-wrapper">
-        <br />
-        <div
-          class="tl3-progress-gauge-progress-text"
-        >{{@value}}/{{@total}}</div>
-        <canvas
-          {{this.setupGauge}}
-          id={{@id}}
-          width="100"
-          height="100"
-        ></canvas>
-      </div>
-    </div> --}}
   </template>
 }
