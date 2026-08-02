@@ -158,7 +158,8 @@ export function diffMore(stats, site_settings) {
   };
 
   for (const [key, value] of Object.entries(diffs)) {
-    if (value >= site_settings.low_tl3_stats_minimum || value === 0) {
+    diffs[key] = value < 0 ? 0 : value;
+    if (diffs[key] >= site_settings.low_tl3_stats_minimum) {
       delete diffs[key];
     }
   }
