@@ -146,40 +146,43 @@ export default class Tl3ProgressButton extends Component {
       <DConditionalLoadingSpinner @condition={{this.loading}} />
     {{else}}
       <h3>{{i18n "see_tl3_progress.section_title"}}</h3>
-      <div class="segmented-bars">
-        {{#each this.barsFilledOrEmpty as |state|}}
-          <div class="segmented-bar" style={{trustHTML this.barBg}}>
-            {{#if state}}
-              <div class="segmented-bar-fill" style={{trustHTML state}}></div>
-            {{else}}
-              <div class="segmented-bar-fill"></div>
-            {{/if}}
-          </div>
-        {{/each}}
-      </div>
-      <p>
-        {{this.progressDoneText}}
-        {{i18n
-          (if
-            (eq this.stats.time_period 1)
-            "see_tl3_progress.modal_title.one"
-            "see_tl3_progress.modal_title.other"
-          )
-          num_days=this.stats.time_period
-        }}
-        {{#if this.showClosestStat}}
-          <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}}
-            {{this.closestStatText}}
-          </div>
-        {{/if}}
-        {{#if this.showAboutToLoseTl3}}
-          <div id="closest-stat-to-lose-text" class="inline-wrapper">{{icon
-              "triangle-exclamation"
-            }}
-            {{this.closestStatToLoseText}}
-          </div>
-        {{/if}}
-      </p>
+      {{#if (eq @user.trust_level 2)}}
+        <div class="segmented-bars">
+          {{#each this.barsFilledOrEmpty as |state|}}
+            <div class="segmented-bar" style={{trustHTML this.barBg}}>
+              {{#if state}}
+                <div class="segmented-bar-fill" style={{trustHTML state}}></div>
+              {{else}}
+                <div class="segmented-bar-fill"></div>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+        <p>
+          {{this.progressDoneText}}
+          {{i18n
+            (if
+              (eq this.stats.time_period 1)
+              "see_tl3_progress.modal_title.one"
+              "see_tl3_progress.modal_title.other"
+            )
+            num_days=this.stats.time_period
+          }}
+        </p>
+      {{/if}}
+
+      {{#if this.showClosestStat}}
+        <div id="closest-stat-text" class="inline-wrapper">{{icon "forward"}}
+          {{this.closestStatText}}
+        </div>
+      {{/if}}
+      {{#if this.showAboutToLoseTl3}}
+        <div id="closest-stat-to-lose-text" class="inline-wrapper">{{icon
+            "triangle-exclamation"
+          }}
+          {{this.closestStatToLoseText}}
+        </div>
+      {{/if}}
 
       {{#if this.siteSettings.show_verbose_tl3_progress}}
         <DButton
