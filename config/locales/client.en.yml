@@ -34,3 +34,7 @@ en:
         other: "Based on last %{num_days} days."
       closest_stat: "Closest: %{stat_name}, %{stat_left_to_next} to go."
       closest_stat_to_lose: "You are close to losing TL3! In danger: %{stat_name}, %{stat_left} away."
+      qualifies: "Qualifies for trust level 3."
+      does_not_qualify: "Doesn't qualify for trust level 3."
+      will_be_promoted: "Will be promoted soon."
+      will_be_demoted: "Will be demoted soon."

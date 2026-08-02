@@ -38,7 +38,8 @@ export default class ProgressBar extends Component {
   }
 
   get meterStyle() {
-    const percent = (this.args.value / this.args.total) * 100;
+    let percent = (this.args.value / this.args.total) * 100;
+    percent = percent > 100 ? 100 : percent;
     // We set it to 5% for aesthetics, if not it becomes too squashed
     return `width: ${percent <= 5 && percent > 0 ? 5 : percent}%; background-color: ${this.session.defaultColorSchemeIsDark || this.session.darkModeAvailable ? this.siteSettings.progress_bar_color_dark : this.siteSettings.progress_bar_color_light};`;
   }

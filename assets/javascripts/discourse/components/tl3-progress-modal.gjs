@@ -174,19 +174,22 @@ export default class Tl3ProgressModal extends Component {
 
       <hr />
 
-      {{#if (eq @user.trust_level 2)}}
-        <p class="inline-wrapper">
-          <div style={{trustHTML this.doesQualifyStyle}}>
-            {{icon (if this.doesQualify "check" "xmark")}}
-          </div>
-          {{#if this.doesQualify}}
-            {{i18n "see_tl3_progress.qualifies"}}
+      <p class="inline-wrapper">
+        <div style={{trustHTML this.doesQualifyStyle}}>
+          {{icon (if this.doesQualify "check" "xmark")}}
+        </div>
+        {{#if this.doesQualify}}
+          {{i18n "see_tl3_progress.qualifies"}}
+          {{#if (eq @user.trust_level 2)}}
             {{i18n "see_tl3_progress.will_be_promoted"}}
-          {{else}}
-            {{i18n "see_tl3_progress.does_not_qualify"}}
           {{/if}}
-        </p>
-      {{/if}}
+        {{else}}
+          {{i18n "see_tl3_progress.does_not_qualify"}}
+          {{#if (eq @user.trust_level 3)}}
+            {{i18n "see_tl3_progress.will_be_demoted"}}
+          {{/if}}
+        {{/if}}
+      </p>
     {{/if}}
 
     {{#if this.siteSettings.modal_bottom_text}}
