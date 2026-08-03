@@ -31,6 +31,10 @@ see_tl3_progress:
     default: false
     type: bool
     client: true
+  show_locked_at_trust_level:
+    default: false
+    type: bool
+    client: true
   modal_bottom_text:
     default: ""
     type: string

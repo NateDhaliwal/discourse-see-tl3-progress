@@ -7,4 +7,11 @@ DiscourseSeeTl3Progress::Engine.routes.draw do
       }
 end
 
+DiscourseSeeTl3Progress::Engine.routes.draw do
+  get "/u/:username/is-locked.json" => "is_locked#show",
+      :constraints => {
+        username: RouteFormat.username,
+      }
+end
+
 Discourse::Application.routes.draw { mount ::DiscourseSeeTl3Progress::Engine, at: "/" }

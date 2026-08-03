@@ -25,4 +25,11 @@ after_initialize do
           username: RouteFormat.username,
         }
   end
+
+  DiscourseSeeTl3Progress::Engine.routes.draw do
+    get "/u/:username/is-locked.json" => "is_locked#show",
+        :constraints => {
+          username: RouteFormat.username,
+        }
+  end
 end
