@@ -122,7 +122,8 @@ export function diffLess(stats) {
   };
 
   for (const [key, value] of Object.entries(diffs)) {
-    if (value === 0) {
+    diffs[key] = value < 0 ? 0 : value;
+    if (diffs[key] === 0) {
       delete diffs[key];
     }
   }

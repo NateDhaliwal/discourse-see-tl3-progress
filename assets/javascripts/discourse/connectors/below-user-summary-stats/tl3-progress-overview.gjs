@@ -40,11 +40,13 @@ export default class Tl3ProgressButton extends Component {
 
   @tracked modalShowing = false;
   @tracked stats;
+  @tracked lockedStatus;
   @tracked loading = true;
 
   constructor() {
     super(...arguments);
     this.getUserStats();
+    this.getIsLocked();
   }
 
   async getUserStats() {
@@ -52,6 +54,19 @@ export default class Tl3ProgressButton extends Component {
       const data = await ajax(
         `/u/${this.args.user.username}/tl3-progress.json`
       );
+      this.stats = data.stats_progress;
+    } catch (e) {
+      popupAjaxError(e);
+    }
+  }
+
+  async getIsLocked() {
+    if (this.siteSettings.show_locked_at_trust_level) {
+      this.loading = false;
+      return;
+    }
+    try {
+      const data = await ajax(`/u/${this.args.user.username}/is-locked.json`);
       this.stats = data.stats_progress;
       this.loading = false;
     } catch (e) {

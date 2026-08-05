@@ -8,9 +8,38 @@ module DiscourseSeeTl3Progress
     end
 
     def stats
+      # notification_level = 0 : muted
+      num_posts_in_muted_categories = (DB.query(<<~SQL)).count()
+          SELECT id
+          FROM posts
+          WHERE topic_id IN (
+            SELECT id
+            FROM topics
+            WHERE category_id IN (
+              SELECT category_id
+              FROM category_users
+              WHERE notification_level = 0
+                AND user_id = 1
+            )
+          );
+        SQL
+
+      num_topics_in_muted_categories = (DB.query(<<~SQL)).count()
+          SELECT id
+            FROM topics
+            WHERE category_id IN (
+              SELECT category_id
+              FROM category_users
+              WHERE notification_level = 0
+                AND user_id = 1
+            );
+        SQL
+
       {
         time_period: SiteSetting.tl3_time_period,
         on_grace_period: @reqs.on_grace_period,
+        num_posts_in_muted_categories: num_posts_in_muted_categories,
+        num_topics_in_muted_categories: num_topics_in_muted_categories,
         silenced: @user.silenced?,
         suspended: @user.suspended?,
         penalty_counts: @reqs.penalty_counts,
