@@ -67,7 +67,7 @@ export default class Tl3ProgressButton extends Component {
     }
     try {
       const data = await ajax(`/u/${this.args.user.username}/is-locked.json`);
-      this.stats = data.stats_progress;
+      this.lockedStatus = data;
       this.loading = false;
     } catch (e) {
       popupAjaxError(e);
